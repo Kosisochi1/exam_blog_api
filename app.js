@@ -1,17 +1,14 @@
 const express = require('express');
-const db = require('./db');
 const userRouter = require('./users/userRouter');
 const bodyParser = require('body-parser');
+const blogRouter = require('./blogs/blogsRouter');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT;
 app.use(bodyParser.json());
 app.use(express.json());
 
 app.use('/v1', userRouter);
+app.use('/v1', blogRouter);
 
-db.connect();
-app.listen(PORT, () => {
-	console.log('Server Started');
-});
+module.exports = app;

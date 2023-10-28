@@ -51,6 +51,11 @@ const loginUser = async (req, res) => {
 				massage: 'Incorrect email or Password',
 			});
 		}
+		// const token = await jwt.sign(
+		// 	{ email: userExist.email, first_name: userExist.first_name },
+		// 	process.env.SECRETE_KEY,
+		// 	{ expiresIn: '1h' }
+		// );
 		const token = await jwt.sign(
 			{ email: userExist.email, _id: userExist._id },
 			process.env.SECRETE_KEY,
