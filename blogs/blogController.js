@@ -23,8 +23,8 @@ const createBlog = async (req, res) => {
 			body: req.body.body,
 			tags: req.body.tags,
 			state: req.body.state,
-			read_count: readTime(req.body.body),
-			read_time: req.body.read_time,
+			read_count: req.body.read_time,
+			read_time: readTime(req.body.body),
 			userId: req.userExist._conditions._id,
 		});
 		logger.info('[CreateBlog] =>  blog created');
@@ -48,9 +48,13 @@ const readTime = (req) => {
 	const bodyContent = req;
 	content = bodyContent;
 	const words = content.match(/\w+/g).length;
-	const wpm = 2;
+	const wpm = 200;
 	const time = words / wpm;
 	return time;
+};
+const readCount = () => {
+	let i = 0;
+	return i++;
 };
 // const read_count = (req) => {
 
@@ -141,20 +145,19 @@ const getAllPublish = async (req, res) => {
 					blogs,
 				},
 			});
-		} else {
-			const blogs = await BlogModel.find({ state: 'published' })
-				.limit(20)
-				.sort({ read_count: 'asc' });
-
-			logger.info('[Return Blog] => return all published blog list');
-
-			return res.status(200).json({
-				massage: 'all blog list',
-				data: {
-					blogs,
-				},
-			});
 		}
+		const blogs = await BlogModel.find({ state: 'published' })
+			.limit(20)
+			.sort({ read_count: 'asc' });
+
+		logger.info('[Return Blog] => return all published blog list');
+
+		return res.status(200).json({
+			massage: 'all blog list',
+			data: {
+				blogs,
+			},
+		});
 	} catch (error) {
 		return res.status(500).json({
 			massage: error.massage,
@@ -163,14 +166,16 @@ const getAllPublish = async (req, res) => {
 };
 const getOnePublished = async (req, res) => {
 	try {
-		const reqParam = req.params.id;
 		let i = 0;
+		const reqParam = req.params.id;
 
 		const singlePublish = await BlogModel.findOne({
 			state: 'published',
 			_id: reqParam,
 		});
-		console.log(req.url);
+		if (req.url) {
+			await BlogModel.updateOne({ _id: reqParam }, { read_time: i++ });
+		}
 
 		if (!singlePublish) {
 			return res.status(404).json({

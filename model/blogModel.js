@@ -35,10 +35,10 @@ const BlogModelSchema = new Schema({
 	},
 	read_count: {
 		type: Number,
+		default: 0,
 	},
 	read_time: {
-		type: String,
-		default: 0,
+		type: Number,
 	},
 	userId: {
 		type: mongoose.Schema.Types.ObjectId,
