@@ -13,6 +13,12 @@ app.use('/v1', userRouter);
 //v1/user/signup
 app.use('/v1', blogRouter);
 //v1/allBlog
+//v1/allBlog?author=author
+//v1/allBlog?tags=tags
+//v1/allBlog?title=title
+//v1/allBlog?order=read_count
+//v1/allBlog?order=read_time
+//v1/allBlog?order=timestamps
 //v1/singleBlog/:id
 //v1/publishedBlog/:id
 //v1/edith/:id
