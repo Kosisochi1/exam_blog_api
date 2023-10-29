@@ -24,5 +24,13 @@ app.use('/v1', blogRouter);
 //v1/edith/:id
 //v1/deleteBlog/:id
 //v1/ownblog
-
+app.get('/', (req, res) => {
+	res.send('you are to my blog app');
+});
+app.get('*', (req, res) => {
+	return res.status(404).json({
+		data: null,
+		error: 'Route not found',
+	});
+});
 module.exports = app;
