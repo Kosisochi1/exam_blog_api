@@ -19,7 +19,7 @@ const authenticateToken = (req, res, next) => {
 		if (!user) {
 			return res.status(401).json({ massage: 'You are not Authenticated' });
 		}
-		req.userExist = user;
+		req.userExist = { userId: verifyToken._id };
 		next();
 	} catch (error) {
 		return res.status(401).json({
@@ -28,6 +28,25 @@ const authenticateToken = (req, res, next) => {
 		});
 	}
 };
+
+const authenticate = async (req, res, next) => {
+	const token = req.cookies.jwt;
+
+	if (token) {
+		try {
+			const decodedValue = await jwt.verify(token, process.env.SECRETE_KEY);
+
+			res.locals.loginUser = { _id: decodedValue._id };
+			next();
+		} catch (error) {
+			res.redirect('index');
+		}
+	} else {
+		res.redirect('index');
+	}
+};
+
 module.exports = {
 	authenticateToken,
+	authenticate,
 };

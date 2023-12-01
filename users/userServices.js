@@ -4,17 +4,22 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
-const createUser = async (req, res) => {
+const createUser = async ({ first_name, last_name, email, password }) => {
+	const reqBody = { first_name, last_name, email, password };
 	try {
-		const reqBody = req.body;
+		// const reqBody = req.body;
 		logger.info('[createUser] => Create user process started');
 		const checkUser = await UserModel.findOne({ email: reqBody.email });
 		logger.info('[createUser] => check if User exist');
 		if (checkUser) {
 			logger.info('[createUser] =>  User exist');
-			return res.status(409).json({
+			// return res.status(409).json({
+			// 	massage: 'User already existed',
+			// });
+			return {
 				massage: 'User already existed',
-			});
+				code: 409,
+			};
 		}
 		const blogUser = await UserModel.create(reqBody);
 
@@ -23,34 +28,38 @@ const createUser = async (req, res) => {
 			process.env.SECRETE_KEY
 		);
 		logger.info('[createUser] => User successfully created');
-		return res.status(201).json({
+		return {
 			massage: 'User Created successfully',
+			code: 201,
 			data: {
 				blogUser,
 				token,
 			},
-		});
+		};
 	} catch (error) {
-		return res.status(500).json({
+		return {
 			massage: error.massage,
-		});
+			code: 500,
+		};
 	}
 };
-const loginUser = async (req, res) => {
+const loginUser = async ({ email, password }) => {
 	try {
-		const reqLogin = req.body;
+		const reqLogin = { email, password };
 		const userExist = await UserModel.findOne({ email: reqLogin.email });
 		if (!userExist) {
 			console.log(userExist);
-			return res.status(404).json({
+			return {
 				massage: 'User not Found',
-			});
+				code: 404,
+			};
 		}
 		const validatePassword = await userExist.isValidPassword(reqLogin.password);
 		if (!validatePassword) {
-			return res.status(401).json({
+			return {
 				massage: 'Incorrect email or Password',
-			});
+				code: 401,
+			};
 		}
 		// const token = await jwt.sign(
 		// 	{ email: userExist.email, first_name: userExist.first_name },
@@ -62,17 +71,19 @@ const loginUser = async (req, res) => {
 			process.env.SECRETE_KEY,
 			{ expiresIn: '1h' }
 		);
-		return res.status(200).json({
+		return {
 			massage: 'Login successfull',
+			code: 200,
 			data: {
 				userExist,
 				token,
 			},
-		});
+		};
 	} catch (error) {
-		return res.status(500).json({
+		return {
+			code: 500,
 			massage: 'Server error',
-		});
+		};
 	}
 };
 

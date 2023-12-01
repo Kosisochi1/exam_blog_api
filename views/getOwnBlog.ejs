@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../../public/signup.css" />
+
+		<title>Document</title>
+	</head>
+	<body>
+		<header><%- include('./partials/header'); %></header>
+		<main class="main">
+			<h2>Get your exciting and educative articles here</h2>
+		</main>
+		<div class="div_container">
+			<% getOwnBlog.forEach(function(blog){%>
+
+			<section class="section">
+				<div class="own_nav">
+					<a href="/views/getOneBlog/<%= blog._id%>">
+						<h4 class="tags"><%= blog.tags%></h4>
+					</a>
+					<div class="edit_nav">
+						<a
+							><form action="/views/publishblog/<%=blog._id%>" method="post">
+								<button
+									onclick="this.form.submit"
+									name="delete"
+									type="submit"
+									value="<%=blog._id%>">
+									Publish
+								</button>
+							</form></a
+						>
+						<a
+							><form action="/views/deleteBlog " method="post">
+								<button
+									onclick="this.form.submit"
+									name="delete"
+									type="submit"
+									value="<%=blog._id%>">
+									<i class="fa fa-trash"></i>
+								</button></form
+						></a>
+					</div>
+				</div>
+				<h2 class="title"><%= blog.state%></h2>
+				<p><%=blog.body%></p>
+				<div class="time_count">
+					<h6 class="time">
+						<i class="fa fa-clock-o" aria-hidden="true"> <%=blog.read_time%></i>
+					</h6>
+					<h6 class="count">
+						<i class="fa fa-eye" aria-hidden="true"></i><%=blog.read_count%>
+					</h6>
+				</div>
+			</section>
+			<%})%>
+		</div>
+
+		<footer><%- include('./partials/footer'); %></footer>
+	</body>
+</html>

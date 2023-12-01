@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../public/signup.css" />
+		<title>Document</title>
+	</head>
+	<body>
+		<main class="signup">
+			<form action="/views/createBlog" method="post" class="form">
+				<h3>CREATE BLOG</h3>
+				<label for="title">Title</label><br />
+				<input type="text" id="title" name="title" value="" /><br />
+				<label for="description">Description</label><br />
+				<input type="text" id="description" name="description" value="" /><br />
+				<label for="tags">Tags</label><br />
+				<input type="text" id="tags" name="tags" value="" /><br />
+				<label for="body">Body</label><br />
+				<textarea type="text" id="body" name="body" value=""></textarea><br />
+				<!-- <textarea type="email" id="email" name="email" value="" /><br /> -->
+				<input class="submit" type="submit" value="CREATE BLOG" />
+			</form>
+		</main>
+	</body>
+</html>

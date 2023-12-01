@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../public/signup.css" />
+
+		<title>Document</title>
+	</head>
+	<body>
+		<header><%- include('./partials/header'); %></header>
+		<main class="main">
+			<h2>Get your exciting and educative articles here</h2>
+		</main>
+		<div class="div_container">
+			<% getAllPublish.forEach(function(blog){%>
+
+			<section class="section">
+				<a href="getOnePublished/<%=blog._id%>">
+					<h4 class="tags"><%= blog.tags%></h4>
+				</a>
+				<h2 class="title"><%= blog.title%></h2>
+				<p><%=blog.body%></p>
+				<div class="time_count">
+					<h6 class="time">
+						<i class="fa fa-clock-o" aria-hidden="true"> <%=blog.read_time%></i>
+					</h6>
+					<h6 class="count">
+						<i class="fa fa-eye" aria-hidden="true"></i><%=blog.read_count%>
+					</h6>
+				</div>
+			</section>
+			<%})%>
+		</div>
+		<footer><%- include('./partials/footer'); %></footer>
+	</body>
+</html>

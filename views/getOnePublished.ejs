@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../../public/getOne.css" />
+
+		<title>Document</title>
+	</head>
+	<body>
+		<header><%- include('./partials/header'); %></header>
+		<section class="section">
+			<h4 class="tags"><%= getOnePublished.tags%></h4>
+
+			<h2 class="title"><%= getOnePublished.title%></h2>
+			<p><%=getOnePublished.body%></p>
+			<div class="time_count">
+				<h6 class="time">
+					<i class="fa fa-clock-o" aria-hidden="true">
+						<%=getOnePublished.read_time%></i
+					>
+				</h6>
+				<h6 class="count">
+					<i class="fa fa-eye" aria-hidden="true"></i
+					><%=getOnePublished.read_count%>
+				</h6>
+			</div>
+		</section>
+		<footer class="footer"><%- include('./partials/footer'); %></footer>
+	</body>
+</html>
