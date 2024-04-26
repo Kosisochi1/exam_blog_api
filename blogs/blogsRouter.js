@@ -2,6 +2,8 @@ const express = require('express');
 const controller = require('./blogController');
 const middleware = require('./blogMiddleware');
 const authMiddleware = require('../auth/authorization');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const router = express.Router();
 
@@ -30,5 +32,7 @@ router.delete(
 	controller.deleteOwnBlog
 );
 router.get('/ownblog', authMiddleware.authenticateToken, controller.getOwnBlog);
+
+router.post('/blog_photos', upload.single('file'), controller.file_upload);
 
 module.exports = router;

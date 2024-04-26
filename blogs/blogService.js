@@ -187,16 +187,15 @@ const edithOwnBlog = async ({ title, description, body, tags, _id }) => {
 		// const reqParam = { _id };
 		const reqId = { _id };
 
-		const edithblog = await BlogModel.findByIdAndUpdate(
-			reqId,
-			reqBody,
+		const edithblog = await BlogModel.updateMany(
+			{ _id: reqId._id },
 
-			// {
-			// 	title: reqBody.title,
-			// 	description: reqBody.description,
-			// 	tags: reqBody.tags,
-			// 	body: reqBody.body,
-			// },
+			{
+				title: reqBody.title,
+				description: reqBody.description,
+				tags: reqBody.tags,
+				body: reqBody.body,
+			},
 
 			{ new: true }
 		);

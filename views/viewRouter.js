@@ -9,39 +9,14 @@ const { authenticate } = require('../auth/authorization');
 const { stringify } = require('uuid');
 
 router.use(cookieParser());
+
 router.get('/', (req, res) => {
 	res.render('index');
 });
+// signup code !!! get and post
 router.get('/signup', (req, res) => {
 	res.render('signup');
 });
-router.get('/login', (req, res) => {
-	res.render('login');
-});
-router.get('/createBlog', (req, res) => {
-	res.render('createBlog');
-});
-router.get('/publishblog', (req, res) => {
-	res.render('publishblog');
-});
-router.get('/updateBlog/:id', authenticate, async (req, res) => {
-	console.log('here');
-	const response = await blogs.findBlog({
-		_id: req.params.id,
-		userId: res.locals.loginUser._id,
-		loginUser: res.locals.loginUser || null,
-	});
-	console.log(response.data.item);
-	res.render('updateBlog', {
-		loginUser: res.locals.loginUser || null,
-		findBlog: response.data.item._id,
-	});
-});
-// router.get('/home', (req, res) => {
-// 	// console.log(req.cookies);
-
-// 	res.render('home');
-// });
 router.post('/signup', async (req, res) => {
 	const response = await controller.createUser({
 		first_name: req.body.first_name,
@@ -56,6 +31,10 @@ router.post('/signup', async (req, res) => {
 	} else {
 		res.render('error');
 	}
+});
+// login code !!! get and post
+router.get('/login', (req, res) => {
+	res.render('login');
 });
 router.post('/login', async (req, res) => {
 	const response = await controller.loginUser({
@@ -73,13 +52,10 @@ router.post('/login', async (req, res) => {
 		res.render('error');
 	}
 });
-router.get('/home', async (req, res) => {
-	const response = await blogs.getAllPublish({});
 
-	res.render('home', {
-		getAllPublish: response.data.blogs,
-		loginUser: res.locals.loginUser || null,
-	});
+// create Blog code !!! get and post
+router.get('/createBlog', (req, res) => {
+	res.render('createBlog');
 });
 router.post('/createBlog', authenticate, async (req, res) => {
 	const response = await blogs.createBlog({
@@ -93,7 +69,33 @@ router.post('/createBlog', authenticate, async (req, res) => {
 	});
 	res.redirect('home');
 });
-router.get('/getOnePublished/:id', async (req, res) => {
+
+router.get('/publishblog', (req, res) => {
+	res.render('publishblog');
+});
+router.get('/updateBlog/:id', authenticate, async (req, res) => {
+	console.log('here');
+	const response = await blogs.findBlog({
+		_id: req.params.id,
+		userId: res.locals.loginUser._id,
+	});
+	console.log(response);
+	res.render('updateBlog', {
+		loginUser: res.locals.loginUser || null,
+		findBlog: response.data.item,
+	});
+});
+
+router.get('/home', async (req, res) => {
+	const response = await blogs.getAllPublish({ state: 'published' });
+
+	res.render('home', {
+		getAllPublish: response.data.blogs,
+		loginUser: res.locals.loginUser || null,
+	});
+});
+
+router.get('/getOnePublished/:id', authenticate, async (req, res) => {
 	const response = await blogs.getOnePublished({
 		_id: req.params.id,
 		state: 'published',
@@ -117,7 +119,7 @@ router.get('/getOneBlog/:id', async (req, res) => {
 	});
 });
 
-router.post('/publishblog/:id', async (req, res) => {
+router.post('/publishblog/:id', authenticate, async (req, res) => {
 	console.log(req.body);
 	const response = await blogs.publishOwnBlog({ _id: req.body.delete });
 	if (response.code === 200) {
@@ -142,16 +144,23 @@ router.post('/edithBlog/:id', authenticate, async (req, res) => {
 	await blogs.edithOwnBlog(
 		{ _id: req.params.id },
 
-		req.body
+		{
+			title: reqBody.title,
+			description: reqBody.description,
+			tags: reqBody.tags,
+			body: reqBody.body,
+		}
 		// paramId: req.params._id,
 
 		// { new: true }
 	);
 	console.log(req.body);
+	// console.log();
 	// ();
 	// console.log(response.data.edithblog);
 	res.redirect('/views/getOwnBlog');
 });
+
 router.post('/deleteBlog', authenticate, async (req, res) => {
 	console.log('here'),
 		await blogs.deleteOwnBlog(
@@ -163,6 +172,14 @@ router.post('/deleteBlog', authenticate, async (req, res) => {
 	console.log(req.params);
 	console.log(req.body);
 	res.redirect('/views/getOwnBlog');
+});
+router.get('/getQuery', async (req, res) => {
+	const { author, tags, title, sort } = req.query;
+	const response = await blogs.getAllPublish({ author, tags, title, sort });
+	console.log(req.query.search);
+	res.render('publishblog', {
+		getAllPublish: response.data.blogs,
+	});
 });
 
 module.exports = router;

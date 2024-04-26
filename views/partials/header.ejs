@@ -16,11 +16,14 @@
 				<img src="../../public/images/kosi.jpg" alt="logo" class="logo" />
 			</div>
 			<div class="container">
-				<input type="search" /><i class="fa fa-search"></i>
+				<form action="/views/getQuery" method="get">
+					<input type="search" name="search" value="" />
+					<button><i class="fa fa-search"></i></button>
+				</form>
 			</div>
 			<div>
 				<ul class="nav_item">
-					<li>Home</li>
+					<li><a href="/views/home">Home</a></li>
 					<li>Article</li>
 					<li>Signup</li>
 					<li>Login</li>

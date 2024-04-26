@@ -76,7 +76,30 @@ const loginUser = async (req, res) => {
 	}
 };
 
+const profile_photo = async (req, res) => {
+	try {
+		const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path);
+
+		fs.unlink(req.file.path, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+
+		return res.json({
+			data: cloudinaryResponse,
+			error: null,
+		});
+	} catch (error) {
+		return res.status(500).json({
+			massage: error.massage,
+		});
+	}
+};
+
 module.exports = {
 	createUser,
 	loginUser,
+	profile_photo,
 };

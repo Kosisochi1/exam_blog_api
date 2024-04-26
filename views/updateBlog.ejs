@@ -8,7 +8,10 @@
 	</head>
 	<body>
 		<main class="signup">
-			<form action="/views/edithBlog/<%=findBlog%>" method="post" class="form">
+			<form
+				action="/views/edithBlog/<%=findBlog._id%>"
+				method="post"
+				class="form">
 				<h3>UPDATE BLOG</h3>
 				<label for="title">Title</label><br />
 				<input type="text" id="title" name="title" value="" /><br />

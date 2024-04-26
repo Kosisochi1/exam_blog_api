@@ -2,6 +2,9 @@ const BlogModel = require('../model/blogModel');
 const { createUser } = require('../users/userCOntroller');
 const logger = require('../logger/index');
 
+const cloudinary = require('../integegration/cloudinary');
+const fs = require('fs');
+
 const createBlog = async (req, res) => {
 	try {
 		const reqBody = req.body;
@@ -19,7 +22,6 @@ const createBlog = async (req, res) => {
 		const blog = await BlogModel.create({
 			title: req.body.title,
 			description: req.body.description,
-			// author: req.body.author,
 			body: req.body.body,
 			tags: req.body.tags,
 			state: req.body.state,
@@ -29,7 +31,7 @@ const createBlog = async (req, res) => {
 		});
 		logger.info('[CreateBlog] =>  blog created');
 
-		return res.status(200).json({
+		return res.status(201).json({
 			massage: 'blog created',
 			data: {
 				blog,
@@ -88,113 +90,14 @@ const getAllPublish = async (req, res) => {
 				select: 'first_name last_name email',
 			})
 			.exec();
-		// .skip(skip)
-		// .limit(limit)
-		// .sort(orderBy)
-		// .exec();
+
 		return res.status(200).json({
 			massage: 'all list returned by search criteria',
 			data: {
 				blogs,
-				// author: blogs.author,
 				totalDoc: blogs.length,
 			},
 		});
-
-		// const reqQuery = req.query;
-
-		// if (req.query.author) {
-		// 	const blogs = await BlogModel.find({
-		// 		state: 'published',
-		// 		author,
-		// 	}).limit(20);
-
-		// 	logger.info('[Return Blog] => return all published blog list by author');
-
-		// 	return res.status(200).json({
-		// 		massage: 'all blog list by author',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// } else if (req.query.tags) {
-		// 	const blogs = await BlogModel.find({ state: 'published', tags }).limit(
-		// 		20
-		// 	);
-
-		// 	logger.info('[Return Blog] => return all published blog list tags');
-
-		// 	return res.status(200).json({
-		// 		massage: 'all blog list by tags',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// } else if (req.query.title) {
-		// 	const blogs = await BlogModel.find({ state: 'published', title }).limit(
-		// 		20
-		// 	);
-
-		// 	logger.info('[Return Blog] => return all published blog list title');
-
-		// 	return res.status(200).json({
-		// 		massage: 'all blog list by title',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// } else if (req.query.order) {
-		// 	const blogs = await BlogModel.find({ state: 'published' })
-		// 		.limit(20)
-		// 		.sort({ read_count: 'desc' });
-
-		// 	logger.info('[Return Blog] => return all published blog list');
-
-		// 	return res.status(200).json({
-		// 		massage: 'all blog list',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// } else if (req.query.order) {
-		// 	const blogs = await BlogModel.find({ state: 'published' })
-		// 		.limit(20)
-		// 		.sort({ read_time: 'asc' });
-
-		// 	logger.info('[Return Blog] => return all published blog list');
-
-		// 	return res.status(200).json({
-		// 		massage: 'all blog list',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// } else if (req.query.order) {
-		// 	const blogs = await BlogModel.find({ state: 'published' })
-		// 		.limit(20)
-		// 		.sort({ timestamps: 'desc' });
-
-		// 	logger.info('[Return Blog] => return all published blog list');
-
-		// 	return res.status(200).json({
-		// 		massage: 'all blog list',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// }
-		// const blogs = await BlogModel.find({ state: 'published' })
-		// 	.limit(20)
-		// 	.sort({ read_count: 'asc' });
-
-		// logger.info('[Return Blog] => return all published blog list');
-
-		// return res.status(200).json({
-		// 	massage: 'all blog list',
-		// 	data: {
-		// 		blogs,
-		// 	},
-		// });
 	} catch (error) {
 		return res.status(500).json({
 			massage: error.massage,
@@ -214,7 +117,6 @@ const getOnePublished = async (req, res) => {
 				select: 'first_name',
 			})
 			.exec();
-		// .select({ body: singlePublish.body, author: singlePublish.author });
 
 		if (!singlePublish) {
 			return res.status(404).json({
@@ -228,7 +130,6 @@ const getOnePublished = async (req, res) => {
 		return res.status(200).json({
 			massage: 'Single Item',
 			data: {
-				// singlePublish,
 				body: singlePublish.body,
 				author: singlePublish.userId.first_name,
 				readCount: singlePublish.read_count,
@@ -355,51 +256,28 @@ const getOwnBlog = async (req, res) => {
 				blogs,
 			},
 		});
+	} catch (error) {
+		return res.status(500).json({
+			massage: error.massage,
+		});
+	}
+};
 
-		// if (req.query.state === 'draft') {
-		// 	const blogs = await BlogModel.find({
-		// 		userId: req.userExist._conditions._id,
-		// 		state: 'draft',
-		// 	})
-		// 		.limit(limit * 1)
-		// 		.skip((page - 1) * limit)
-		// 		.exec();
-		// 	return res.status(200).json({
-		// 		massage: 'Own Blog list',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// } else if (req.query.state === 'published') {
-		// 	const blogs = await BlogModel.find({
-		// 		userId: req.userExist._conditions._id,
-		// 		state: 'published',
-		// 	})
-		// 		.limit(limit * 1)
-		// 		.skip((page - 1) * limit)
-		// 		.exec();
-		// 	return res.status(200).json({
-		// 		massage: 'Own Blog list',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// } else {
-		// 	const blogs = await BlogModel.find({
-		// 		userId: req.userExist._conditions._id,
-		// 	})
-		// 		.limit(limit * 1)
-		// 		.skip((page - 1) * limit)
-		// 		.exec();
-		// 	logger.info('[Return Blog] => return all own blog list');
+const file_upload = async (req, res) => {
+	try {
+		const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path);
 
-		// 	return res.status(200).json({
-		// 		massage: 'Own Blog list',
-		// 		data: {
-		// 			blogs,
-		// 		},
-		// 	});
-		// }
+		fs.unlink(req.file.path, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+
+		return res.json({
+			data: cloudinaryResponse,
+			error: null,
+		});
 	} catch (error) {
 		return res.status(500).json({
 			massage: error.massage,
@@ -415,4 +293,5 @@ module.exports = {
 	edithOwnBlog,
 	deleteOwnBlog,
 	getOwnBlog,
+	file_upload,
 };

@@ -4,7 +4,10 @@ const bodyParser = require('body-parser');
 const blogRouter = require('./blogs/blogsRouter');
 const view_router = require('./views/viewRouter');
 const morgan = require('morgan');
+//
 require('dotenv').config();
+const cloudinary = require('./integegration/cloudinary');
+const fs = require('fs');
 
 const app = express();
 app.use(morgan('dev'));
@@ -23,6 +26,19 @@ app.use('/v1', blogRouter);
 app.get('/', (req, res) => {
 	res.render('index');
 });
+// app.post('/photos', upload.single('file'), async (req, res, next) => {
+// 	const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path);
+// 	fs.unlink(req.file.path, (err) => {
+// 		if (err) {
+// 			console.error(err);
+// 			return;
+// 		}
+// 	});
+// 	return res.json({
+// 		data: cloudinaryResponse,
+// 		error: null,
+// 	});
+// });
 //v1/allBlog?author=author
 //v1/allBlog?tags=tags
 //v1/allBlog?title=title
