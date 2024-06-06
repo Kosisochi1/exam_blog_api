@@ -19,8 +19,8 @@ const BlogModelSchema = new Schema(
 			require: true,
 		},
 		author: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'usermodels',
+			type: String,
+			require: true,
 		},
 		body: {
 			type: String,

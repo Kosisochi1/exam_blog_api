@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const blogRouter = require('./blogs/blogsRouter');
 const view_router = require('./views/viewRouter');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser')
 //
 require('dotenv').config();
 const cloudinary = require('./integegration/cloudinary');
@@ -13,6 +14,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser())
 
 app.use(express.json());
 app.use('/public', express.static('public'));

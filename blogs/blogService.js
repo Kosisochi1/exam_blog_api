@@ -1,4 +1,6 @@
 const BlogModel = require('../model/blogModel');
+const fs = require('fs')
+const cloudinary = require('cloudinary').v2
 
 const createBlog = async ({
 	title,
@@ -20,18 +22,16 @@ const createBlog = async ({
 			};
 		}
 
-		const blog = await BlogModel.create(
-			reqBody
-			// title: reqBody.title,
-			// description: reqBody.description,
-			// // author: req.body.author,
-			// body: reqBody.body,
-			// tags: reqBody.tags,
-			// state: reqBody.state,
-			// read_count: reqBody.read_count,
-			// read_time: readTime(reqBody.body),
-			// userId: res.locals.loginUser._id,
-		);
+		const blog = await BlogModel.create({
+			title: reqBody.title,
+			description: reqBody.description,
+			author: req.body.author,
+			body: reqBody.body,
+			tags: reqBody.tags,
+			state: reqBody.state,
+			read_count: reqBody.read_count,
+			read_time: readTime(reqBody.body),
+			userId: res.locals.loginUser._id,});
 		return {
 			massage: 'Blog created',
 			code: 201,
@@ -55,6 +55,52 @@ const readTime = (rBody) => {
 	return time;
 };
 const getAllPublish = async ({ author, tags, title, sort }) => {
+	try {
+		const reqQuery = { author, tags, title, sort };
+		const queryObject = {state:'published'};
+		if (reqQuery.author) {
+			queryObject.author = { $regex: author, $options: 'i' };
+		}
+		if (reqQuery.tags) {
+			queryObject.tags = tags;
+		}
+		if (reqQuery.title) {
+			queryObject.title = { $regex: title, $options: 'i' };
+		}
+
+		let result = BlogModel.find(queryObject);
+		if (reqQuery.sort) {
+			const sortList = sort.split(',').join(' ');
+			result = result.sort(sortList);
+		} else {
+			result = result.sort('read_time');
+		}
+		const page = reqQuery.page || 1;
+		const limit = reqQuery.limit || 20;
+		const skip = (page - 1) * limit;
+		result = result.skip(skip).limit(limit);
+
+		const blogs = await result
+			.populate({
+				path: 'userId',
+				select: 'first_name last_name email',
+			})
+			.exec();
+		return {
+			massage: 'all list returned by search criteria',
+			data: {
+				blogs,
+				// author: blogs.author,
+				totalDoc: blogs.length,
+			},
+		};
+	} catch (error) {
+		return {
+			massage: error.massage,
+		};
+	}
+};
+const getAllBlogs = async ({ author, tags, title, sort }) => {
 	try {
 		const reqQuery = { author, tags, title, sort };
 		const queryObject = {};
@@ -220,7 +266,7 @@ const deleteOwnBlog = async ({ _id }) => {
 		const reqParam = { _id };
 		const findBlog = await BlogModel.findById({
 			_id: reqParam._id,
-			// userId: res.locals.loginUser._id,
+			userId: res.locals.loginUser._id,
 		});
 		logger.info('[Return Blog] =>  blog deleted');
 		if (findBlog) {
@@ -251,7 +297,7 @@ const deleteOwnBlog = async ({ _id }) => {
 const getOwnBlog = async ({ state, userId }) => {
 	try {
 		const reqBody = { state, userId };
-		const qeuryObject = {};
+		const qeuryObject = {userId:res.locals.loginUser._id};
 		if (reqBody.state) {
 			qeuryObject.reqBody.state = state === 'draft' ? 'draft' : 'published';
 		}
@@ -324,10 +370,38 @@ const getOneBlog = async ({ _id, state }) => {
 	}
 };
 
+const file_upload = async (rBody) => {
+	try {
+		// const reqBody = req.file.path
+		const cloudinaryResponse = await cloudinary.uploader.upload(rBody);
+
+		fs.unlink(rBody, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+
+		return {
+			data: cloudinaryResponse,
+			error: null,
+		};
+	} catch (error) {
+		return {
+			code:500,
+			massage: error,
+		};
+	}
+};
+
+
+
 module.exports = {
+	file_upload,
 	findBlog,
 	createBlog,
 	getAllPublish,
+	getAllBlogs,
 	getOnePublished,
 	publishOwnBlog,
 	edithOwnBlog,

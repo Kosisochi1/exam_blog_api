@@ -21,6 +21,7 @@ const createBlog = async (req, res) => {
 		}
 		const blog = await BlogModel.create({
 			title: req.body.title,
+			author:req.body.author,
 			description: req.body.description,
 			body: req.body.body,
 			tags: req.body.tags,
@@ -61,7 +62,10 @@ const readTime = (req) => {
 const getAllPublish = async (req, res) => {
 	try {
 		const { author, tags, title, sort } = req.query;
-		const queryObject = {};
+
+
+			const queryObject = {state:'published'};
+		
 		if (author) {
 			queryObject.author = { $regex: author, $options: 'i' };
 		}
@@ -80,7 +84,7 @@ const getAllPublish = async (req, res) => {
 			result = result.sort('read_time');
 		}
 		const page = req.query.page || 1;
-		const limit = req.query.limit || 5;
+		const limit = req.query.limit || 10;
 		const skip = (page - 1) * limit;
 		result = result.skip(skip).limit(limit);
 
@@ -90,6 +94,10 @@ const getAllPublish = async (req, res) => {
 				select: 'first_name last_name email',
 			})
 			.exec();
+			// if(req.url ='/all_published_blog'){
+			// 	console.log(req.url)
+			// }
+
 
 		return res.status(200).json({
 			massage: 'all list returned by search criteria',
@@ -104,6 +112,59 @@ const getAllPublish = async (req, res) => {
 		});
 	}
 };
+const getAllBlogs = async (req, res) => {
+	try {
+		const { author, tags, title, sort } = req.query;
+
+
+			const queryObject = {};
+		
+		if (author) {
+			queryObject.author = { $regex: author, $options: 'i' };
+		}
+		if (tags) {
+			queryObject.tags = tags;
+		}
+		if (title) {
+			queryObject.title = { $regex: title, $options: 'i' };
+		}
+
+		let result = BlogModel.find(queryObject);
+		if (sort) {
+			const sortList = sort.split(',').join(' ');
+			result = result.sort(sortList);
+		} else {
+			result = result.sort('read_time');
+		}
+		const page = req.query.page || 1;
+		const limit = req.query.limit || 10;
+		const skip = (page - 1) * limit;
+		result = result.skip(skip).limit(limit);
+
+		const blogs = await result
+			.populate({
+				path: 'userId',
+				select: 'first_name last_name email',
+			})
+			.exec();
+			// if(req.url ='/all_published_blog'){
+			// 	console.log(req.url)
+			// }
+
+
+		return res.status(200).json({
+			massage: 'all list returned by search criteria',
+			data: {
+				blogs,
+				totalDoc: blogs.length,
+			},
+		});
+	} catch (error) {
+		return res.status(500).json({
+			massage: error.massage,
+		});
+	}
+}
 const getOnePublished = async (req, res) => {
 	try {
 		const reqParam = req.params.id;
@@ -130,9 +191,10 @@ const getOnePublished = async (req, res) => {
 		return res.status(200).json({
 			massage: 'Single Item',
 			data: {
-				body: singlePublish.body,
-				author: singlePublish.userId.first_name,
-				readCount: singlePublish.read_count,
+				singlePublish,
+			// 	body: singlePublish.body,
+				Publish_by: singlePublish.userId.first_name,
+			// 	readCount: singlePublish.read_count,
 			},
 		});
 	} catch (error) {
@@ -288,6 +350,7 @@ const file_upload = async (req, res) => {
 module.exports = {
 	createBlog,
 	getAllPublish,
+	getAllBlogs,
 	getOnePublished,
 	publishOwnBlog,
 	edithOwnBlog,
