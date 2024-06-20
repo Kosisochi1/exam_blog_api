@@ -141,7 +141,7 @@ const showCurrentUser = async ({ user }) => {
   return { user };
 };
 const updateUser = async ({ email, first_name, last_name }) => {
-  const { email, first_name, last_name } = req.body;
+  //   const { email, first_name, last_name } = req.body;
 
   if (!email || !last_name || !first_name) {
     return { massage: "Please provide all fields", code: 400 };
