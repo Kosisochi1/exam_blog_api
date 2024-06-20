@@ -167,7 +167,7 @@ const updateUser = async ({ email, first_name, last_name }) => {
   return { user, token, code: 200 };
 };
 const updateUserPassword = async ({ oldPassword, newPassword }) => {
-  const { oldPassword, newPassword } = req.body;
+  //   const { oldPassword, newPassword } = req.body;
   if (!oldPassword || !newPassword) {
     return { massage: "Provide Passwords", code: 400 };
   }
