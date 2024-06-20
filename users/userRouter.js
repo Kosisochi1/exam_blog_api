@@ -9,6 +9,7 @@ const {
   auhtorisePermission,
   authenticateCookie,
   checkPermission,
+  authenticateToken,
 } = require("../auth/authorization");
 
 const router = express.Router();
@@ -24,24 +25,21 @@ router.post(
 router.get("/user/logout", controller.logout);
 router.get(
   "/user/getAllUsers",
-  authenticateCookie,
+  authenticateToken,
   auhtorisePermission("admin"),
   controller.getAllUsers
 );
 router.get(
   "/user/showCurrentUser",
-  authenticateCookie,
+  authenticateToken,
   controller.showCurrentUser
 );
-router.patch("/user/updateUser", authenticateCookie, controller.updateUser);
+router.patch("/user/updateUser",   authenticateToken,
+controller.updateUser);
 router.patch(
   "/user/updatePassword",
-  authenticateCookie,
+  authenticateToken,
   controller.updateUserPassword
 );
-router.get(
-  "/user/singleUser/:id",
-  authenticateCookie,
-  controller.getSingleUser
-);
+router.get("/user/singleUser/:id", authenticateToken, controller.getSingleUser);
 module.exports = router;

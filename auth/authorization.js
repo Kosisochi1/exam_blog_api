@@ -3,29 +3,32 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 // Authentication using  jwt token
-const authenticateToken = (req, res, next) => {
+const authenticateToken = async (req, res, next) => {
   const reqHeader = req.headers;
   try {
     if (!reqHeader) {
-      return res.status(401).json({
+      return res.status(404).json({
         massage: "You are not authenticad",
       });
     }
     const token = req.headers.authorization.split(" ")[1];
-    const verifyToken = jwt.verify(token, process.env.SECRETE_KEY);
-    const user = User.findOne({
-      email: verifyToken.email,
-      _id: verifyToken._id,
+    const decodedValue = await jwt.verify(token, process.env.SECRETE_KEY);
+    const user = await User.findOne({
+      email: decodedValue.email,
+      _id: decodedValue._id,
     });
     if (!user) {
-      return res.status(401).json({ massage: "You are not Authenticated" });
+      return res.status(404).json({ massage: "You are not Authenticated" });
     }
-    req.userExist = { userId: verifyToken._id };
+    req.user = {
+      email: decodedValue.email,
+      _id: decodedValue._id,
+      role: decodedValue.role,
+    };
     next();
   } catch (error) {
-    return res.status(401).json({
+    return res.status(404).json({
       massage: "You are not Authenticated",
-      error,
     });
   }
 };
