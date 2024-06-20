@@ -53,7 +53,7 @@ const createUser = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      massage: error.massage,
+      massage: "Internal Server Error",
     });
   }
 };
@@ -73,11 +73,7 @@ const loginUser = async (req, res) => {
         massage: "Incorrect email or Password",
       });
     }
-    // const token = await jwt.sign(
-    // 	{ email: userExist.email, first_name: userExist.first_name },
-    // 	process.env.SECRETE_KEY,
-    // 	{ expiresIn: '1h' }
-    // );
+
     const token = await jwt.sign(
       { email: userExist.email, _id: userExist._id, role: userExist.role },
       process.env.SECRETE_KEY,
@@ -98,7 +94,7 @@ const loginUser = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      massage: "Server error",
+      massage: "Internal Server error",
     });
   }
 };

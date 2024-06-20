@@ -5,6 +5,9 @@ const blogRouter = require("./blogs/blogsRouter");
 const view_router = require("./views/viewRouter");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const cors = require("cors");
 //
 require("dotenv").config();
 const cloudinary = require("./integegration/cloudinary");
@@ -15,7 +18,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-
+app.use(cors());
 app.use(express.json());
 app.use("/public", express.static("public"));
 app.set("view engine", "ejs");
