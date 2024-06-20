@@ -1,0 +1,500 @@
+openapi: 3.0.0
+info:
+  title: Blog API
+  description: This API  showcase the functioning of Blog news API.
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost:5000/v1/user
+  variables: {}
+- url: http://localhost:5000/v1
+  variables: {}
+paths:
+  /login:
+    post:
+      tags:
+      - User
+      summary: login
+      description: Login end-point
+      operationId: login
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/loginrequest'
+              - example:
+                  email: onyii1@gmail.com
+                  password: kosi1
+            example:
+              email: onyii1@gmail.com
+              password: kosi1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /logout:
+    get:
+      tags:
+      - User
+      summary: Logout
+      description: Log out user
+      operationId: Logout
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /signup:
+    post:
+      tags:
+      - User
+      summary: create_user
+      description: Register users
+      operationId: create_user
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/create_user_request'
+              - example:
+                  first_name: kosiOnyi
+                  last_name: kosi
+                  email: onyi@gmail.com
+                  password: kosi
+            example:
+              first_name: kosiOnyi
+              last_name: kosi
+              email: onyi@gmail.com
+              password: kosi
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /profile_photos:
+    post:
+      tags:
+      - User
+      summary: image_upload
+      description: Photo upload end-point
+      operationId: image_upload
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+              - photo
+              type: object
+              properties:
+                photo:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /getAllUsers:
+    get:
+      tags:
+      - User
+      summary: get_all_user
+      description: This end-point gets all users
+      operationId: get_all_user
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /showCurrentUser:
+    get:
+      tags:
+      - User
+      summary: Show_current_user
+      description: This end-point shows the current user
+      operationId: Show_current_user
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /updateUser:
+    patch:
+      tags:
+      - User
+      summary: update_user
+      description: This end-point updates users data
+      operationId: update_user
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/update_user_request'
+              - example:
+                  first_name: kosi
+                  last_name: kosi
+                  email: onyii1@gmail.com
+            example:
+              first_name: kosi
+              last_name: kosi
+              email: onyii1@gmail.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /updatePassword:
+    patch:
+      tags:
+      - User
+      summary: update_password
+      description: This end-point update the password
+      operationId: update_password
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/update_password_request'
+              - example:
+                  oldPassword: kosi
+                  newPassword: kosi1
+            example:
+              oldPassword: kosi
+              newPassword: kosi1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /singleUser/665cd2e49f50aa8d3d96f134:
+    get:
+      tags:
+      - User
+      summary: Get_single _user
+      description: This end-point get a single
+      operationId: Get_single_user
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: http://localhost:5000/v1/user
+        variables: {}
+  /create_blog:
+    post:
+      tags:
+      - Blogs
+      summary: create_blog
+      description: Create blog end-point
+      operationId: create_blog
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/create_blog_request'
+              - example:
+                  title: 'Google Pixel: Everything We Know'
+                  description: ' The Pixel 8a may have the same camera as last year and cost $200 more'
+                  author: Dua Rashid
+                  body: " Rabbit R1, the bright orange AI gadget that became the talk of the town during CES 2024, was launched and demoed at a private event in New York last week. The “pick-up party” as the company called it was exclusively for the first few hundred buyers and now we’re seeing some early hands-on impressions. Scouring all the stories on the device, it looks like everyone had more or less similar thoughts on it. We’ve rounded up some of the most common praise and complaints from around the web into one place to help you figure out if the R1 is right for you.Before we start, if you’ve been hearing about this device but are still unclear on what the hell it really is, read my explainer on it first Way too many comparisons with Humane’s AI PinThe recently-released Humane AI Pin and the Rabbit R1 share a similar concept. They’re both ambitious about being your first “AI companion.” Coincidentally (unless it wasn’t a coincidence), the devices were released within weeks of each other. Obviously, reviewers couldn’t help but compare them and one refrain stood out in everyone’s preview of the R1: “at least it doesn’t suck as much as the Humane pin.”Though no one has tested the R1's full capabilities yet, there are major, glaring factors that already give it an edge over Humane’s device, with pricing being number one. Even if this whole AI companion thing turns out to be underwhelming, consumers would much rather waste $200 on the R1 than $700 on the Pin. It makes sense; it’s a new concept that’s still very much in the works and putting a $700 tag on an unfinished, in-progress device is not ideal.By all accounts, Humane’s pin was too futuristic for its own good. The whole laser projection feature they tried on the device didn’t really succeed. David Pierce, from The Verge, reports “I much prefer the [R1's] interface to the Humane AI Pin—because there’s a screen, and you can see the thing working so the AI delays don’t feel quite so interminable.”No subscription fee on the R1, as opposed to the monthly fee on the AI Pin, is another major reason why the former is more attractive at the moment. And Rabbit’s CEO, Jesse Lyu, made sure to reiterate this multiple times at the pick-up party, with constant shade thrown at its rival AI device.Apart from the excessively innovative approach Humane tried to take and failed at, there was also something about how its device looked that put many people off. Most reviewers strongly prefer the R1's quirky, silly aesthetic over it. “The R1 just oozes character. From the witty feature names to the retro aesthetic [...] Rabbit and Teenage Engineering have developed something that’s got a lot more flavor than Humane’s almost clinical appearance and approach,” writes Cherlynn Low at Engadget.It’s getting everyone nostalgicWhile we’re discussing its aesthetic, I want to add that it looks like this is half of its appeal, at the moment. The industry can’t stop raving about all the nostalgia it’s inducing. Apparently, the pick-up party was set up the same way. “The entire place was an homage to retro vibes, and the entry to Rabbit’s event was lined with display cases containing gadgets like a Pokedex, a Sony Watchman, a Motorola pager, Game Boy Color, and more,” Engadget writes.The company is going for a specific vibe, and it’s clearly succeeding at it. Most reporters confess that they like this device simply because it takes them back. Kimberly Gedeon from Mashable wrote “It’s the nostalgia. With the cute black-and-white rabbit icon bouncing up and down the screen surrounded by a ‘loud’ color, the device reminded me of my childhood obsession with ‘90s pocket toys like the Tamagotchi or Digimon. Shout-out to Teenage Engineering for designing this AI device; the Rabbit R1 makes me feel like a kid again.”Engadget and The Verge both admit that the device’s appeal comes more from looking old-school than build quality. Engadget writes, “It didn’t feel good in that it’s premium or durable; it felt good because it reminded me of my childhood.” The Verge thinks the device is “not luxurious, or even particularly high-end, just silly and fun. Where Humane’s AI Pin feels like a carefully sculpted metal gem, the R1 feels like an old-school MP3 player crossed with a fidget spinner.”It’s still learning how to walkBased on early reviews, the R1 is still figuring itself out. It’s doing some things well but struggling in other areas. Ryan from Android Authority reported, “I’ve seen the R1 shine, and I’ve seen it stumble.” Engadget and Mashable had relatively positive interactions with it and were impressed with its response time, while The Verge said there was considerable delay.It also completely messed up The Verge’s order once. They write: “I asked for ‘Beyoncé’s new album,’ and the device excitedly went and found me ‘Crazy in Love’—a lullaby version, from an artist called “Rockabye Baby!”In any case, keep in mind that most people haven’t put the R1 through its paces. It’s only been asked to tell the temperature or play a song. Built-in voice assistants on our phones can handle that perfectly well, too. The real test of this device is going to be its training mode where you can teach it how to interact with any site of your choice, and it will then be able to do that on its own.An unfinished productThe R1 is a work in progress, and the CEO is quite transparent about this. According to Engadget: “Lyu made many promises to the audience, seeming to acknowledge that the R1 might not be fully featured when it arrives in their hands. Even on the company’s website, there’s a list of features that are planned, in the works, or being explored. Throughout his speech, Lyu repeated the phrase ‘we’re gonna work on it.’”This explains why most people who got their hands on it weren’t blown away by its current functionality. It feels very ChatGPT-ey at the moment, except it can go ahead and actually execute commands for you—like call you an Uber or order food on DoorDash. Your phone is perfectly capable of doing all that. The on-device camera, or the Rabbit eye “lets you point to any object—which it will then tell you about. It’s very Google Lens. Hell, even my iPhone can perform this functionality, too”, reports Mashable.According to Android Authority, “Rabbit’s software is still in its earliest days. The overall R1 experience is pretty bare-bones right out of the box, offering a total of nine functions ready to go from day one—each of which is almost identical to what your smartphone can already do and is a little bit more of a headache to set up.”If anything, at first, you might even feel limited by the nine services you can use on it, until you teach it macros and train it for the services of your choice. Android Authority adds “Currently, the R1 supports music playback, ridesharing, and food delivery through Spotify, Uber, and Doordash. However, it only supports those apps—you can’t choose Lyft, Tidal, or even Uber Eats instead.”Not providing enough at the moment, and being honest about it is one thing, but it looks like there have also been some cases of the R1 not providing what it promised. According to The Verge, “It can’t send emails or make spreadsheets, though Lyu has been demoing both for months.”Why couldn’t this just be an app?Whenever a company offers something out of the box, consumers love asking why it couldn’t have just been an app.Currently, folks who have been spending time with this device are unable to answer this question. Android Authority says, “I struggle to find a good answer when someone asks me why this isn’t just an app. "
+                  tags: Phone
+            example:
+              title: 'Google Pixel: Everything We Know'
+              description: ' The Pixel 8a may have the same camera as last year and cost $200 more'
+              author: Dua Rashid
+              body: " Rabbit R1, the bright orange AI gadget that became the talk of the town during CES 2024, was launched and demoed at a private event in New York last week. The “pick-up party” as the company called it was exclusively for the first few hundred buyers and now we’re seeing some early hands-on impressions. Scouring all the stories on the device, it looks like everyone had more or less similar thoughts on it. We’ve rounded up some of the most common praise and complaints from around the web into one place to help you figure out if the R1 is right for you.Before we start, if you’ve been hearing about this device but are still unclear on what the hell it really is, read my explainer on it first Way too many comparisons with Humane’s AI PinThe recently-released Humane AI Pin and the Rabbit R1 share a similar concept. They’re both ambitious about being your first “AI companion.” Coincidentally (unless it wasn’t a coincidence), the devices were released within weeks of each other. Obviously, reviewers couldn’t help but compare them and one refrain stood out in everyone’s preview of the R1: “at least it doesn’t suck as much as the Humane pin.”Though no one has tested the R1's full capabilities yet, there are major, glaring factors that already give it an edge over Humane’s device, with pricing being number one. Even if this whole AI companion thing turns out to be underwhelming, consumers would much rather waste $200 on the R1 than $700 on the Pin. It makes sense; it’s a new concept that’s still very much in the works and putting a $700 tag on an unfinished, in-progress device is not ideal.By all accounts, Humane’s pin was too futuristic for its own good. The whole laser projection feature they tried on the device didn’t really succeed. David Pierce, from The Verge, reports “I much prefer the [R1's] interface to the Humane AI Pin—because there’s a screen, and you can see the thing working so the AI delays don’t feel quite so interminable.”No subscription fee on the R1, as opposed to the monthly fee on the AI Pin, is another major reason why the former is more attractive at the moment. And Rabbit’s CEO, Jesse Lyu, made sure to reiterate this multiple times at the pick-up party, with constant shade thrown at its rival AI device.Apart from the excessively innovative approach Humane tried to take and failed at, there was also something about how its device looked that put many people off. Most reviewers strongly prefer the R1's quirky, silly aesthetic over it. “The R1 just oozes character. From the witty feature names to the retro aesthetic [...] Rabbit and Teenage Engineering have developed something that’s got a lot more flavor than Humane’s almost clinical appearance and approach,” writes Cherlynn Low at Engadget.It’s getting everyone nostalgicWhile we’re discussing its aesthetic, I want to add that it looks like this is half of its appeal, at the moment. The industry can’t stop raving about all the nostalgia it’s inducing. Apparently, the pick-up party was set up the same way. “The entire place was an homage to retro vibes, and the entry to Rabbit’s event was lined with display cases containing gadgets like a Pokedex, a Sony Watchman, a Motorola pager, Game Boy Color, and more,” Engadget writes.The company is going for a specific vibe, and it’s clearly succeeding at it. Most reporters confess that they like this device simply because it takes them back. Kimberly Gedeon from Mashable wrote “It’s the nostalgia. With the cute black-and-white rabbit icon bouncing up and down the screen surrounded by a ‘loud’ color, the device reminded me of my childhood obsession with ‘90s pocket toys like the Tamagotchi or Digimon. Shout-out to Teenage Engineering for designing this AI device; the Rabbit R1 makes me feel like a kid again.”Engadget and The Verge both admit that the device’s appeal comes more from looking old-school than build quality. Engadget writes, “It didn’t feel good in that it’s premium or durable; it felt good because it reminded me of my childhood.” The Verge thinks the device is “not luxurious, or even particularly high-end, just silly and fun. Where Humane’s AI Pin feels like a carefully sculpted metal gem, the R1 feels like an old-school MP3 player crossed with a fidget spinner.”It’s still learning how to walkBased on early reviews, the R1 is still figuring itself out. It’s doing some things well but struggling in other areas. Ryan from Android Authority reported, “I’ve seen the R1 shine, and I’ve seen it stumble.” Engadget and Mashable had relatively positive interactions with it and were impressed with its response time, while The Verge said there was considerable delay.It also completely messed up The Verge’s order once. They write: “I asked for ‘Beyoncé’s new album,’ and the device excitedly went and found me ‘Crazy in Love’—a lullaby version, from an artist called “Rockabye Baby!”In any case, keep in mind that most people haven’t put the R1 through its paces. It’s only been asked to tell the temperature or play a song. Built-in voice assistants on our phones can handle that perfectly well, too. The real test of this device is going to be its training mode where you can teach it how to interact with any site of your choice, and it will then be able to do that on its own.An unfinished productThe R1 is a work in progress, and the CEO is quite transparent about this. According to Engadget: “Lyu made many promises to the audience, seeming to acknowledge that the R1 might not be fully featured when it arrives in their hands. Even on the company’s website, there’s a list of features that are planned, in the works, or being explored. Throughout his speech, Lyu repeated the phrase ‘we’re gonna work on it.’”This explains why most people who got their hands on it weren’t blown away by its current functionality. It feels very ChatGPT-ey at the moment, except it can go ahead and actually execute commands for you—like call you an Uber or order food on DoorDash. Your phone is perfectly capable of doing all that. The on-device camera, or the Rabbit eye “lets you point to any object—which it will then tell you about. It’s very Google Lens. Hell, even my iPhone can perform this functionality, too”, reports Mashable.According to Android Authority, “Rabbit’s software is still in its earliest days. The overall R1 experience is pretty bare-bones right out of the box, offering a total of nine functions ready to go from day one—each of which is almost identical to what your smartphone can already do and is a little bit more of a headache to set up.”If anything, at first, you might even feel limited by the nine services you can use on it, until you teach it macros and train it for the services of your choice. Android Authority adds “Currently, the R1 supports music playback, ridesharing, and food delivery through Spotify, Uber, and Doordash. However, it only supports those apps—you can’t choose Lyft, Tidal, or even Uber Eats instead.”Not providing enough at the moment, and being honest about it is one thing, but it looks like there have also been some cases of the R1 not providing what it promised. According to The Verge, “It can’t send emails or make spreadsheets, though Lyu has been demoing both for months.”Why couldn’t this just be an app?Whenever a company offers something out of the box, consumers love asking why it couldn’t have just been an app.Currently, folks who have been spending time with this device are unable to answer this question. Android Authority says, “I struggle to find a good answer when someone asks me why this isn’t just an app. "
+              tags: Phone
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: http://localhost:5000/v1
+        variables: {}
+  /all_blog:
+    get:
+      tags:
+      - Blogs
+      summary: Get_all_blogs
+      description: Get all blog endpoint
+      operationId: Get_all_blogs
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+      - url: http://localhost:5000/v1
+        variables: {}
+  /singleBlog/4fb8effa-ba6e-4cd5-bcee-9a8a980b1b11:
+    get:
+      tags:
+      - Blogs
+      summary: Get_a_blog
+      description: Get a blog endpoint
+      operationId: Get_a_blog
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      servers:
+      - url: http://localhost:5000/v1
+        variables: {}
+  /publishBlog/4fb8effa-ba6e-4cd5-bcee-9a8a980b1b11:
+    patch:
+      tags:
+      - Blogs
+      summary: Publish_blog
+      description: publishing post endpoint
+      operationId: Publish_blog
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: http://localhost:5000/v1
+        variables: {}
+  /v1/deleteBlog/9e47382c-5570-4b9e-8d1d-7c04b1a2708b:
+    delete:
+      tags:
+      - Blogs
+      summary: Delete_blog
+      description: delete blog post
+      operationId: Delete_blog
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: http://localhost:5000/v1
+        variables: {}
+  /v1/ownblog:
+    get:
+      tags:
+      - Blogs
+      summary: Get_own_blog
+      description: Getting user specific blog
+      operationId: Get_own_blog
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: http://localhost:5000/v1
+        variables: {}
+  /v1/all_published_blog:
+    get:
+      tags:
+      - Blogs
+      summary: Get_all_published_blog
+      description: Getting all publish blogs
+      operationId: Get_all_published_blog
+      parameters:
+      - name: author
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: ma
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+      - bearer: []
+      servers:
+      - url: http://localhost:5000/v1
+        variables: {}
+components:
+  schemas:
+    loginrequest:
+      title: loginrequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: onyii1@gmail.com
+        password: kosi1
+    create_user_request:
+      title: create_user_request
+      required:
+      - first_name
+      - last_name
+      - email
+      - password
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        first_name: kosiOnyi
+        last_name: kosi
+        email: onyi@gmail.com
+        password: kosi
+    update_user_request:
+      title: update_user_request
+      required:
+      - first_name
+      - last_name
+      - email
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+      example:
+        first_name: kosi
+        last_name: kosi
+        email: onyii1@gmail.com
+    update_password_request:
+      title: update_password_request
+      required:
+      - oldPassword
+      - newPassword
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
+      example:
+        oldPassword: kosi
+        newPassword: kosi1
+    create_blog_request:
+      title: create_blog_request
+      required:
+      - title
+      - description
+      - author
+      - body
+      - tags
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        author:
+          type: string
+        body:
+          type: string
+        tags:
+          type: string
+      example:
+        title: 'Google Pixel: Everything We Know'
+        description: ' The Pixel 8a may have the same camera as last year and cost $200 more'
+        author: Dua Rashid
+        body: " Rabbit R1, the bright orange AI gadget that became the talk of the town during CES 2024, was launched and demoed at a private event in New York last week. The “pick-up party” as the company called it was exclusively for the first few hundred buyers and now we’re seeing some early hands-on impressions. Scouring all the stories on the device, it looks like everyone had more or less similar thoughts on it. We’ve rounded up some of the most common praise and complaints from around the web into one place to help you figure out if the R1 is right for you.Before we start, if you’ve been hearing about this device but are still unclear on what the hell it really is, read my explainer on it first Way too many comparisons with Humane’s AI PinThe recently-released Humane AI Pin and the Rabbit R1 share a similar concept. They’re both ambitious about being your first “AI companion.” Coincidentally (unless it wasn’t a coincidence), the devices were released within weeks of each other. Obviously, reviewers couldn’t help but compare them and one refrain stood out in everyone’s preview of the R1: “at least it doesn’t suck as much as the Humane pin.”Though no one has tested the R1's full capabilities yet, there are major, glaring factors that already give it an edge over Humane’s device, with pricing being number one. Even if this whole AI companion thing turns out to be underwhelming, consumers would much rather waste $200 on the R1 than $700 on the Pin. It makes sense; it’s a new concept that’s still very much in the works and putting a $700 tag on an unfinished, in-progress device is not ideal.By all accounts, Humane’s pin was too futuristic for its own good. The whole laser projection feature they tried on the device didn’t really succeed. David Pierce, from The Verge, reports “I much prefer the [R1's] interface to the Humane AI Pin—because there’s a screen, and you can see the thing working so the AI delays don’t feel quite so interminable.”No subscription fee on the R1, as opposed to the monthly fee on the AI Pin, is another major reason why the former is more attractive at the moment. And Rabbit’s CEO, Jesse Lyu, made sure to reiterate this multiple times at the pick-up party, with constant shade thrown at its rival AI device.Apart from the excessively innovative approach Humane tried to take and failed at, there was also something about how its device looked that put many people off. Most reviewers strongly prefer the R1's quirky, silly aesthetic over it. “The R1 just oozes character. From the witty feature names to the retro aesthetic [...] Rabbit and Teenage Engineering have developed something that’s got a lot more flavor than Humane’s almost clinical appearance and approach,” writes Cherlynn Low at Engadget.It’s getting everyone nostalgicWhile we’re discussing its aesthetic, I want to add that it looks like this is half of its appeal, at the moment. The industry can’t stop raving about all the nostalgia it’s inducing. Apparently, the pick-up party was set up the same way. “The entire place was an homage to retro vibes, and the entry to Rabbit’s event was lined with display cases containing gadgets like a Pokedex, a Sony Watchman, a Motorola pager, Game Boy Color, and more,” Engadget writes.The company is going for a specific vibe, and it’s clearly succeeding at it. Most reporters confess that they like this device simply because it takes them back. Kimberly Gedeon from Mashable wrote “It’s the nostalgia. With the cute black-and-white rabbit icon bouncing up and down the screen surrounded by a ‘loud’ color, the device reminded me of my childhood obsession with ‘90s pocket toys like the Tamagotchi or Digimon. Shout-out to Teenage Engineering for designing this AI device; the Rabbit R1 makes me feel like a kid again.”Engadget and The Verge both admit that the device’s appeal comes more from looking old-school than build quality. Engadget writes, “It didn’t feel good in that it’s premium or durable; it felt good because it reminded me of my childhood.” The Verge thinks the device is “not luxurious, or even particularly high-end, just silly and fun. Where Humane’s AI Pin feels like a carefully sculpted metal gem, the R1 feels like an old-school MP3 player crossed with a fidget spinner.”It’s still learning how to walkBased on early reviews, the R1 is still figuring itself out. It’s doing some things well but struggling in other areas. Ryan from Android Authority reported, “I’ve seen the R1 shine, and I’ve seen it stumble.” Engadget and Mashable had relatively positive interactions with it and were impressed with its response time, while The Verge said there was considerable delay.It also completely messed up The Verge’s order once. They write: “I asked for ‘Beyoncé’s new album,’ and the device excitedly went and found me ‘Crazy in Love’—a lullaby version, from an artist called “Rockabye Baby!”In any case, keep in mind that most people haven’t put the R1 through its paces. It’s only been asked to tell the temperature or play a song. Built-in voice assistants on our phones can handle that perfectly well, too. The real test of this device is going to be its training mode where you can teach it how to interact with any site of your choice, and it will then be able to do that on its own.An unfinished productThe R1 is a work in progress, and the CEO is quite transparent about this. According to Engadget: “Lyu made many promises to the audience, seeming to acknowledge that the R1 might not be fully featured when it arrives in their hands. Even on the company’s website, there’s a list of features that are planned, in the works, or being explored. Throughout his speech, Lyu repeated the phrase ‘we’re gonna work on it.’”This explains why most people who got their hands on it weren’t blown away by its current functionality. It feels very ChatGPT-ey at the moment, except it can go ahead and actually execute commands for you—like call you an Uber or order food on DoorDash. Your phone is perfectly capable of doing all that. The on-device camera, or the Rabbit eye “lets you point to any object—which it will then tell you about. It’s very Google Lens. Hell, even my iPhone can perform this functionality, too”, reports Mashable.According to Android Authority, “Rabbit’s software is still in its earliest days. The overall R1 experience is pretty bare-bones right out of the box, offering a total of nine functions ready to go from day one—each of which is almost identical to what your smartphone can already do and is a little bit more of a headache to set up.”If anything, at first, you might even feel limited by the nine services you can use on it, until you teach it macros and train it for the services of your choice. Android Authority adds “Currently, the R1 supports music playback, ridesharing, and food delivery through Spotify, Uber, and Doordash. However, it only supports those apps—you can’t choose Lyft, Tidal, or even Uber Eats instead.”Not providing enough at the moment, and being honest about it is one thing, but it looks like there have also been some cases of the R1 not providing what it promised. According to The Verge, “It can’t send emails or make spreadsheets, though Lyu has been demoing both for months.”Why couldn’t this just be an app?Whenever a company offers something out of the box, consumers love asking why it couldn’t have just been an app.Currently, folks who have been spending time with this device are unable to answer this question. Android Authority says, “I struggle to find a good answer when someone asks me why this isn’t just an app. "
+        tags: Phone
+    Edith_blog_Request:
+      title: Edith_blog_Request
+      required:
+      - author
+      type: object
+      properties:
+        author:
+          type: string
+      example:
+        author: kosi kenn
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+- name: User
+- name: Blogs

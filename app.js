@@ -14,6 +14,8 @@ const cloudinary = require("./integegration/cloudinary");
 const fs = require("fs");
 
 const app = express();
+
+const swaggerDocument = YAML.load("./swagger.yaml");
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -29,8 +31,9 @@ app.use("/v1", userRouter);
 app.use("/v1", blogRouter);
 //v1/allBlog
 app.get("/", (req, res) => {
-  res.send("Welcome to Blog Api");
+  res.send('<h1> Welcome to Blog API</h1><a href="/api_doc">Documentation</a>');
 });
+app.use("/api_doc", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 // app.post('/photos', upload.single('file'), async (req, res, next) => {
 // 	const cloudinaryResponse = await cloudinary.uploader.upload(req.file.path);
 // 	fs.unlink(req.file.path, (err) => {
