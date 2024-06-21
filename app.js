@@ -33,7 +33,9 @@ app.use("/v1", userRouter);
 app.use("/v1", blogRouter);
 //v1/allBlog
 app.get("/", (req, res) => {
-  res.send('<h1> Welcome to Blog API</h1><a href="/api_doc">Documentation</a>');
+  res.send(
+    '<h1> Welcome to Blog API</h1><a href="https://documenter.getpostman.com/view/28936241/2sA3XVAKpU">Documentation</a>'
+  );
 });
 app.use("/api_doc", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 

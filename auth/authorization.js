@@ -74,7 +74,7 @@ const authenticate = async (req, res, next) => {
 const auhtorisePermission = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      res.status(401).json({ msg: "Unauthorised" });
+      return res.status(401).json({ msg: "Unauthorised" });
     }
 
     next();

@@ -282,6 +282,7 @@ const deleteOwnBlog = async (req, res) => {
         massage: "Blog Deleted",
         data: {
           deleteblog,
+          massage: "Blog Deleted",
         },
       });
     } else {

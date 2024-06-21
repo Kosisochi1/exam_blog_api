@@ -1,6 +1,9 @@
 require("dotenv").config();
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const cloudinary = require("cloudinary").v2;
+const jwt = require("jsonwebtoken");
+
 const UserModel = require("../model/userModel");
 
 const fs = require("fs");
@@ -66,14 +69,14 @@ const updateUser = async (req, res) => {
 const updateUserPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   if (!oldPassword || !newPassword) {
-    res.status(400).json({ massage: "Provide Passwords" });
+    return res.status(400).json({ massage: "Provide Passwords" });
   }
   const user = await UserModel.findOne({ _id: req.user._id });
   // check if old password is correct
 
   const isPasswordValid = await user.isValidPassword(oldPassword);
   if (!isPasswordValid) {
-    res.status(403).json({ massage: "Invalid Password" });
+    return res.status(403).json({ massage: "Invalid Password" });
   }
 
   user.password = newPassword;
