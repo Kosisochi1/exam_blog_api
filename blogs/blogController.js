@@ -1,5 +1,5 @@
 const BlogModel = require("../model/blogModel");
-const { createUser } = require("../users/userCOntroller");
+const { createUser } = require("../usersAuth/userCOntroller");
 const logger = require("../logger/index");
 
 const cloudinary = require("../integegration/cloudinary");
